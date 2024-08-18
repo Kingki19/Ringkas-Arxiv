@@ -25,6 +25,7 @@ def summarize_pdf(model, pdf) -> str:
 # Sidebar for API key input
 st.sidebar.title("Settings")
 api_key = st.sidebar.text_input("Enter your API key", type="password")
+st.sidebar.write("If you don't have API Key, get one free here: https://aistudio.google.com/app/apikey")
 if not api_key:
     st.sidebar.warning("Please enter an API key to proceed.")
 if api_key:
@@ -36,7 +37,7 @@ if api_key:
             st.sidebar.success("Your API Key is valid!")
     except:
         st.sidebar.error("Your API Key is not valid!")
-st.sidebar.write("If you don't have API Key, get one free here: https://aistudio.google.com/app/apikey")
+
 
 # Streamlit App
 st.title("arXiv PDF Access")
