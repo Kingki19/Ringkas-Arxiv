@@ -19,7 +19,7 @@ def get_pdf_link(arxiv_url):
         st.error(f"An error occurred: {e}")
         return None
 
-def summarize_pdf(model, pdf) -> str:
+# def summarize_pdf(model, pdf) -> str:
     
 
 # Sidebar for API key input
