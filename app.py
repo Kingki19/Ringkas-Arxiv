@@ -26,11 +26,12 @@ if not api_key:
     st.sidebar.warning("Please enter an API key to proceed.")
 if api_key:
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-1.5-flash')
-    response = model.generate_content("Hello")
-    if response:
-        st.sidebar.success("Your API Key is valid!")
-    else:
+    try:
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        response = model.generate_content("Hello")
+        if response:
+            st.sidebar.success("Your API Key is valid!")
+    except:
         st.sidebar.error("Your API Key is not valid!")
 
 # Streamlit App
