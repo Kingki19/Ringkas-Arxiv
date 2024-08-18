@@ -1,8 +1,10 @@
 import streamlit as st
 import arxiv
 import google.generativeai as genai
+import requests
+from io import BytesIO
 
-def get_pdf_link(arxiv_url):
+def get_pdf_content(arxiv_url):
     try:
         # Extract the arXiv ID from the URL
         arxiv_id = arxiv_url.split('/')[-1]
@@ -12,12 +14,19 @@ def get_pdf_link(arxiv_url):
         result = next(search.results(), None)
         
         if result:
-            return result.pdf_url
+            pdf_url = result.pdf_url
+            response = requests.get(pdf_url)
+            if response.status_code == 200:
+                pdf_content = BytesIO(response.content)
+                return pdf_content, pdf_url
+            else:
+                st.error("Failed to download PDF.")
+                return None, None
         else:
-            return None
+            return None, None
     except Exception as e:
         st.error(f"An error occurred: {e}")
-        return None
+        return None, None
 
 # def summarize_pdf(model, pdf) -> str:
     
@@ -46,14 +55,18 @@ arxiv_url = st.text_input("Enter arXiv link:")
 
 if st.button("Get PDF"):
     if arxiv_url:
-        with st.spinner("Fetching PDF link..."):
-            pdf_link = get_pdf_link(arxiv_url)
-            if pdf_link:
-                st.success("PDF link found!")
-                pdf_file = genai.upload_file(path=pdf_link)
-                if pdf_file:
-                    st.write('file terbaca oleh genai')
+        with st.spinner("Fetching PDF..."):
+            pdf_content, pdf_url = get_pdf_content(arxiv_url)
+            if pdf_content:
+                st.success("PDF downloaded successfully!")
+                st.write(f"[Download PDF directly]({pdf_url})")
+                st.download_button(
+                    label="Download PDF",
+                    data=pdf_content,
+                    file_name=f"{arxiv_url.split('/')[-1]}.pdf",
+                    mime="application/pdf"
+                )
             else:
-                st.error("Failed to find PDF link. Please check the URL.")
+                st.error("Failed to retrieve PDF. Please check the URL.")
     else:
         st.write("Please enter a valid arXiv URL.")
