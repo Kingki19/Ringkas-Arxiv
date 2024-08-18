@@ -19,6 +19,9 @@ def get_pdf_link(arxiv_url):
         st.error(f"An error occurred: {e}")
         return None
 
+def summarize_pdf(model, pdf) -> str:
+    
+
 # Sidebar for API key input
 st.sidebar.title("Settings")
 api_key = st.sidebar.text_input("Enter your API key", type="password")
@@ -33,6 +36,7 @@ if api_key:
             st.sidebar.success("Your API Key is valid!")
     except:
         st.sidebar.error("Your API Key is not valid!")
+st.sidebar.write("If you don't have API Key, get one free here: https://aistudio.google.com/app/apikey")
 
 # Streamlit App
 st.title("arXiv PDF Access")
