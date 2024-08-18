@@ -18,6 +18,12 @@ def get_pdf_link(arxiv_url):
         st.error(f"An error occurred: {e}")
         return None
 
+# Sidebar for API key input
+st.sidebar.title("Settings")
+api_key = st.sidebar.text_input("Enter your API key", type="password")
+if not api_key:
+    st.warning("Please enter an API key to proceed.")
+    
 # Streamlit App
 st.title("arXiv PDF Access")
 
