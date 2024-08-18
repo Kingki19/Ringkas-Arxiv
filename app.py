@@ -1,5 +1,6 @@
 import streamlit as st
 import arxiv
+import google.generativeai as genai
 
 def get_pdf_link(arxiv_url):
     try:
@@ -22,8 +23,13 @@ def get_pdf_link(arxiv_url):
 st.sidebar.title("Settings")
 api_key = st.sidebar.text_input("Enter your API key", type="password")
 if not api_key:
-    st.warning("Please enter an API key to proceed.")
-    
+    st.sidebar.warning("Please enter an API key to proceed.")
+if api_key:
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel('gemini-1.5-flash')
+    response = model.generate_content("Write a story about an AI and magic")
+    st.sidebar.write(response.text)
+
 # Streamlit App
 st.title("arXiv PDF Access")
 
