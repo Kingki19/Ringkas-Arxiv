@@ -27,8 +27,11 @@ if not api_key:
 if api_key:
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel('gemini-1.5-flash')
-    response = model.generate_content("Write a story about an AI and magic")
-    st.sidebar.write(response.text)
+    response = model.generate_content("Hello")
+    if response:
+        st.sidebar.success("Your API Key is valid!")
+    else:
+        st.sidebar.error("Your API Key is not valid!")
 
 # Streamlit App
 st.title("arXiv PDF Access")
