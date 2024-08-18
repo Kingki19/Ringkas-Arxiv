@@ -50,7 +50,9 @@ if st.button("Get PDF"):
             pdf_link = get_pdf_link(arxiv_url)
             if pdf_link:
                 st.success("PDF link found!")
-                st.write(f"[Download PDF]({pdf_link})")
+                pdf_file = genai.upload_file(path=pdf_link)
+                if pdf_file:
+                    st.write('file terbaca oleh genai')
             else:
                 st.error("Failed to find PDF link. Please check the URL.")
     else:
